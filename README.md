@@ -35,3 +35,48 @@ This repository is maintained by **Kartik Gonde**. It includes both a Terraform 
 
 The repository contains **four backend services**. Notifications use SNS and SQS infrastructure; a separate notification worker and payment gateway are not included.
 
+## Architecture
+
+```mermaid
+flowchart TB
+    Shopper[Shopper / Browser]
+    CDN[CloudFront]
+    S3[S3 / React storefront]
+    Auth[Cognito / User authentication]
+    API[API Gateway / HTTP API]
+
+    Shopper --> CDN --> S3
+    Shopper --> Auth
+    Shopper --> API
+    Auth -. JWT validation .-> API
+
+    subgraph VPC[AWS VPC]
+        Link[VPC Link]
+        ALB[Internal Application Load Balancer]
+        subgraph ECS[ECS Fargate / Container services]
+            Products[Product service]
+            Cart[Cart service]
+            Users[User service]
+            Orders[Order service]
+        end
+        Dynamo[(DynamoDB / Products and carts)]
+        Postgres[(RDS PostgreSQL / Users and orders)]
+        Link --> ALB
+        ALB --> Products & Cart & Users & Orders
+        Products --> Dynamo
+        Cart --> Dynamo
+        Users --> Postgres
+        Orders --> Postgres
+        Orders --> Cart & Users & Products
+    end
+
+    API --> Link
+    Orders --> SNS[SNS / Order events]
+    SNS --> SQS[SQS / Shipping event queue]
+    SNS --> Email[Optional confirmed email subscription]
+```
+
+The Terraform API exposes `GET /products` publicly and uses a Cognito JWT authorizer for other application routes. Requests enter the VPC through a VPC Link and are routed to the services by an internal load balancer. CORS preflight requests have a separate route.
+
+ECR stores container images, Parameter Store supplies service configuration, and CloudWatch collects container logs. The deployment guides also cover optional Route 53 and ACM configuration for a custom domain.
+
