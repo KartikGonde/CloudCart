@@ -80,3 +80,18 @@ The Terraform API exposes `GET /products` publicly and uses a Cognito JWT author
 
 ECR stores container images, Parameter Store supplies service configuration, and CloudWatch collects container logs. The deployment guides also cover optional Route 53 and ACM configuration for a custom domain.
 
+## Technology stack
+
+| Layer | Technologies |
+| --- | --- |
+| Frontend | React, React Router, AWS Amplify UI |
+| Backend | Python, FastAPI, Uvicorn |
+| Authentication | Amazon Cognito |
+| Compute | Docker, Amazon ECR, Amazon ECS Fargate |
+| API and networking | API Gateway, VPC Link, ALB, VPC, subnets, security groups, NAT Gateway |
+| Data | Amazon DynamoDB and Amazon RDS PostgreSQL |
+| Hosting | Amazon S3 and CloudFront |
+| Events | Amazon SNS and SQS |
+| Configuration and logs | Systems Manager Parameter Store and CloudWatch |
+| Infrastructure | Terraform and Bash deployment scripts |
+
