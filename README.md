@@ -204,3 +204,23 @@ Confirm the SNS subscription using the email AWS sends. On subsequent runs, edit
 
 See the [Terraform deployment guide](infra/README.md) for details. The infrastructure retains its existing `ecommerce` resource names and Parameter Store paths for compatibility. **CloudCart** is the repository identity.
 
+## Manual deployment guide
+
+Prefer to work through the architecture one layer at a time? Follow the modules in order.
+
+| Module | Topic |
+| --- | --- |
+| 00 | [Prerequisites and tool setup](deployment/module00-prerequisites.md) |
+| 01 | [VPC and networking](deployment/module01-networking.md) |
+| 02 | [Cognito authentication](deployment/module02-cognito-authentication.md) |
+| 03 | [Frontend hosting](deployment/module03-frontend-deployment.md) |
+| 04 | [Databases and product data](deployment/module04-data-layer.md) |
+| 05 | [Backend container deployment](deployment/module05-backend-deployment.md) |
+| 06 | [API Gateway integration](deployment/module06-api-gateway.md) |
+| 07 | [Frontend and backend integration](deployment/module07-frontend-backend-integration.md) |
+| 08 | [Order notifications](deployment/module08-notification.md) |
+| 09 | [Custom domain and TLS](deployment/module09-custom-domain-and-ssl.md) |
+| 10 | [Resource cleanup](deployment/module10-cleanup.md) |
+
+These guides retain the original infrastructure naming. For the source checkout, use the CloudCart clone command above. Custom domain setup is documented separately and is not automated by `deploy.sh`.
+
