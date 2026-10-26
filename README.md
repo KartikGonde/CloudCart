@@ -224,3 +224,38 @@ Prefer to work through the architecture one layer at a time? Follow the modules 
 
 These guides retain the original infrastructure naming. For the source checkout, use the CloudCart clone command above. Custom domain setup is documented separately and is not automated by `deploy.sh`.
 
+## Operations and project limits
+
+### Logs and cleanup
+
+```bash
+# Stream order-service logs in the deployed AWS region.
+aws logs tail /ecs/order-service --follow
+
+# Remove the resources created by the Terraform deployment.
+./destroy.sh
+```
+
+`destroy.sh` asks for confirmation and deletes the managed resources, including application data. Keep your local Terraform state while the deployment exists; it is needed to manage and remove those resources.
+
+AWS resources can incur charges while running. Actual costs depend on region, uptime, and usage. Local Terraform state and `terraform.tfvars` are excluded from Git; state can contain the database password.
+
+### Current scope
+
+CloudCart demonstrates the application and infrastructure workflow. It does not implement payment processing or a shipping consumer. The existing frontend test is a Create React App starter test and is not a complete application test suite. The GitHub workflows check prerequisite installation when manually triggered; they are not application CI or automatic deployment pipelines.
+
+### Publish this checkout
+
+The publishing helper targets the existing [`KartikGonde/CloudCart`](https://github.com/KartikGonde/CloudCart) repository and builds ten new commits from the project import and the README sections. It preserves the repository visibility and extends its existing default-branch history when present. It requires Python 3, Git, an authenticated GitHub CLI, and filesystem/network access from your terminal.
+
+```bash
+# Review the ten commit messages without making changes.
+python3 scripts/publish-cloudcart.py --plan
+
+# Authenticate as KartikGonde, then publish.
+gh auth login -h github.com
+python3 scripts/publish-cloudcart.py
+```
+
+The helper is for the initial import of an uncommitted checkout. It also accepts an already initialized repository with no commits, no staged changes, and the matching origin. It refuses to overwrite existing local history, preserves remote-only files, and pushes without force. For subsequent changes, use normal Git commits and pushes. If another push changes the remote branch during publication, Git rejects the push so the changes can be reviewed. It uses Kartik Gonde as the commit author with the authenticated account's GitHub noreply address. It adds no collaborators or co-author trailers. The messages are also listed in [the commit plan](docs/COMMIT_MESSAGES.md).
+
