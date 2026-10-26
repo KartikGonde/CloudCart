@@ -173,3 +173,34 @@ npm run build
 
 The generated files are written to `frontend/react-app/build/`.
 
+## Automated deployment
+
+Run from the repository root:
+
+```bash
+# Verify that the AWS CLI is using your intended account.
+aws sts get-caller-identity
+
+# Provision the infrastructure and deploy the application.
+./deploy.sh
+```
+
+To add an order-notification email subscription on the first run:
+
+```bash
+NOTIFICATION_EMAIL=you@example.com ./deploy.sh
+```
+
+The script performs the following steps:
+
+1. Checks the required tools, Docker, and AWS credentials.
+2. Creates `infra/terraform.tfvars` if it is missing and initializes Terraform.
+3. Creates ECR repositories, then builds and pushes images for the four services.
+4. Applies the infrastructure, including the databases, ECS services, API, and messaging resources.
+5. Generates the frontend configuration, builds React, uploads to S3, and invalidates CloudFront.
+6. Waits for ECS services, checks the product endpoint, and prints the website and API URLs.
+
+Confirm the SNS subscription using the email AWS sends. On subsequent runs, edit the existing `infra/terraform.tfvars` to change settings; the script does not regenerate that file.
+
+See the [Terraform deployment guide](infra/README.md) for details. The infrastructure retains its existing `ecommerce` resource names and Parameter Store paths for compatibility. **CloudCart** is the repository identity.
+
