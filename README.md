@@ -259,3 +259,21 @@ python3 scripts/publish-cloudcart.py
 
 The helper is for the initial import of an uncommitted checkout. It also accepts an already initialized repository with no commits, no staged changes, and the matching origin. It refuses to overwrite existing local history, preserves remote-only files, and pushes without force. For subsequent changes, use normal Git commits and pushes. If another push changes the remote branch during publication, Git rejects the push so the changes can be reviewed. It uses Kartik Gonde as the commit author with the authenticated account's GitHub noreply address. It adds no collaborators or co-author trailers. The messages are also listed in [the commit plan](docs/COMMIT_MESSAGES.md).
 
+## Maintainer and acknowledgments
+
+**Kartik Gonde** maintains the CloudCart repository and its project documentation.
+
+- **GitHub:** [@KartikGonde](https://github.com/KartikGonde)
+- **Repository:** [KartikGonde/CloudCart](https://github.com/KartikGonde/CloudCart)
+
+The starting application and deployment learning materials come from **Chetan Agrawal's [AWS e-commerce project](https://github.com/awswithchetan/ecommerce-web-app)**. CloudCart preserves that source acknowledgment; it does not imply that the original author is a collaborator on this repository.
+
+---
+
+<div align="center">
+
+**CloudCart · Maintained by Kartik Gonde**
+
+React storefront. Python services. AWS infrastructure.
+
+</div>
