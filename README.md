@@ -116,3 +116,60 @@ CloudCart/
 └── destroy.sh                  # Remove Terraform-managed resources
 ```
 
+## Getting started
+
+### Prerequisites
+
+- Git, Node.js 20 or newer, and npm.
+- Docker, running locally, for container builds.
+- Terraform 1.5 or newer and an authenticated AWS CLI for cloud deployment.
+- An AWS account with permissions to provision the services defined in `infra/`.
+
+### Clone the repository
+
+```bash
+git clone https://github.com/KartikGonde/CloudCart.git
+cd CloudCart
+```
+
+### Run the frontend locally
+
+```bash
+cd frontend/react-app
+npm install
+npm start
+```
+
+The development server runs at `http://localhost:3000`. The frontend requires a configured backend and Cognito user pool; this project does not include a standalone offline shopping mode.
+
+Set the real values in [`frontend/react-app/src/aws-config.js`](frontend/react-app/src/aws-config.js):
+
+```javascript
+const awsConfig = {
+  Auth: {
+    Cognito: {
+      userPoolId: 'YOUR_USER_POOL_ID',
+      userPoolClientId: 'YOUR_USER_POOL_CLIENT_ID',
+      loginWith: { email: true },
+    },
+  },
+  API: {
+    baseUrl: 'YOUR_API_GATEWAY_URL',
+  },
+};
+
+export default awsConfig;
+```
+
+Replace every placeholder before signing in or calling the API. The current API client gives `awsConfig.API.baseUrl` priority over `REACT_APP_API_URL`, so setting the environment variable alone does not override a nonempty placeholder.
+
+For a local frontend calling the Terraform-deployed API, add `http://localhost:3000` to `additional_cors_origins` in `infra/terraform.tfvars` and apply the infrastructure change. The automated deployment writes `aws-config.js` from Terraform outputs.
+
+Build the frontend from `frontend/react-app` with:
+
+```bash
+npm run build
+```
+
+The generated files are written to `frontend/react-app/build/`.
+
