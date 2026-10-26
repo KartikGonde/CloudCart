@@ -1,0 +1,17 @@
+name: Test install-prerequisites.sh on macOS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Docker via brew (CI workaround - no Docker Desktop in CI)
+        run: brew install docker docker-compose
+
+      - name: Run install-prerequisites.sh
+        # Pipe newline to skip the interactive Docker Desktop prompt
+        run: echo "" | bash install-prerequisites.sh
