@@ -95,3 +95,24 @@ ECR stores container images, Parameter Store supplies service configuration, and
 | Configuration and logs | Systems Manager Parameter Store and CloudWatch |
 | Infrastructure | Terraform and Bash deployment scripts |
 
+## Repository structure
+
+```text
+CloudCart/
+├── frontend/react-app/          # React storefront and Cognito integration
+├── services/
+│   ├── product-service/         # Product catalog and inventory
+│   ├── cart-service/            # Shopping cart operations
+│   ├── user-service/            # User profiles
+│   └── order-service/           # Orders and event publishing
+├── infra/                      # Terraform infrastructure definitions
+├── data/                       # Sample catalog, product images, loading scripts
+├── deployment/                 # Step-by-step AWS deployment modules
+├── .github/workflows/          # Manually triggered prerequisite installer checks
+├── docs/COMMIT_MESSAGES.md      # Ten planned commit messages
+├── scripts/publish-cloudcart.py # GitHub publishing helper
+├── install-prerequisites.sh    # Development tool installation helper
+├── deploy.sh                   # Provision, build, and deploy
+└── destroy.sh                  # Remove Terraform-managed resources
+```
+
